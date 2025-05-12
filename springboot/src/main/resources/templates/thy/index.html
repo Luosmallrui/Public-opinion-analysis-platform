@@ -52,7 +52,38 @@
 
 <!-- Add User Modal -->
 <div id="modal-form-add" class="modal fade" aria-hidden="true">
-	<!-- Modal content -->
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12 b-r">
+						<div class="ibox-title">
+							<h5>添加用户</h5>
+						</div>
+						<div class="ibox-content">
+							<form class="form-horizontal">
+								<div class="form-group">
+									<label class="col-sm-3 control-label">邮箱：</label>
+									<div class="col-sm-8">
+										<input id="addEmail" type="text" placeholder="请输入邮箱" class="form-control">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">密码：</label>
+									<div class="col-sm-8">
+										<input id="addPassword" type="password" placeholder="请输入密码" class="form-control">
+									</div>
+								</div>
+								<div>
+									<button id="addSubmitBtn" class="btn btn-primary btn-primary pull-right m-t-n-xs" type="button"><i class="fa fa-check"></i>&nbsp;提交</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Update User Modal -->
@@ -107,9 +138,34 @@
 			searchUserData(searchKeyword);
 		});
 
-		// Add user functionality
 		$('#addUserBtn').click(function() {
-			// Show the add user modal
+			$('#modal-form-add').modal('show');
+		});
+
+		$('#addSubmitBtn').click(function() {
+			var email = $('#addEmail').val();
+			var password = $('#addPassword').val();
+
+			if (!email || !password) {
+				alert('请输入完整信息');
+				return;
+			}
+
+			$.ajax({
+				url: '/user/add',
+				type: 'POST',
+				data: {
+					email: email,
+					password: password
+				},
+				success: function(data) {
+					$('#modal-form-add').modal('hide');
+					loadUserData();
+				},
+				error: function(error) {
+					console.log('Error adding user:', error);
+				}
+			});
 		});
 
 		// Update user functionality
