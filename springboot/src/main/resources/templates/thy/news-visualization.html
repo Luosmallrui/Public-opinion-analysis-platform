@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Propagation Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico"> <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<body>
+<div class="row clearfix">
+    <center>
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/news/list">首页</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#">事件追踪</a>
+                        </li>
+                        <li class="active">
+                            <a href="#">新闻传播链</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">热点预测<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Something else here</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">Separated link</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">One more separated link</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+
+                </div>
+
+            </nav>
+            <!--<div class="jumbotron">
+                <h1>
+                    查看近半年的新闻
+                </h1>
+            </div>-->
+        </div>
+    </center>
+</div>
+
+
+</body>
+<body>
+<div id="newsPropagationChart" style="width: 100%; height: 1000px;"></div>
+
+<script th:inline="javascript">
+    // 获取传播链数据
+    var propagationList = [[${propagationList}]];
+
+    // 构建节点和边的数据
+    var userScreenNameCategory = 0;
+    var postScreenNameCategory = 1;
+    var source;   // 存储第一个item的userScreenName
+
+    var nodes = [];
+    var edges = [];
+    var i = 0;
+    propagationList.forEach(function (item) {
+        if (i === 0) {     // 遍历的第一个item
+            source = item.userScreenName;  // 存储userScreenName作为源节点
+            nodes.push({
+                name: source,
+                category: 0,
+                color: 'red'
+            });
+            i++;
+        } else if (i === propagationList.length - 1) { // 最后一个item
+            var postScreenNames = item.postScreenName.split(',');
+            postScreenNames.forEach(postScreenName => {
+                if (postScreenName === '老乌课堂' || postScreenName === '祥林二叔' || postScreenName === '傻B天才神恶魔'){
+                    nodes.push({
+                        name: postScreenName,
+                        category: 3,   // 类别设为3
+                        color: '#00ff04'
+                    });
+                    edges.push({source: source, target: postScreenName, isPred: item.isPred});
+                }
+                if (postScreenName === '朱乘zc' || postScreenName === '三影讲故事'){
+                    nodes.push({
+                        name: postScreenName,
+                        category: 1,   // 类别设为1
+                        color: '#4fc1ea'
+                    });
+                    edges.push({source: source, target: postScreenName, isPred: item.isPred});
+                }
+                else if (postScreenName !== source){
+                    nodes.push({
+                        name: postScreenName,
+                        category: 2,   // 类别设为2
+                        color: '#7c15d5'
+                    });
+                    edges.push({source: source, target: postScreenName, isPred: item.isPred});
+                }
+            })
+        } else {
+            nodes.push({
+                name: item.postScreenName,
+                category: 1,
+                color: '#4fc1ea'
+            });
+            edges.push({source: source, target: item.postScreenName, isPred: item.isPred});
+            i++;
+        }
+    });
+
+    // 去重
+    /*const nodesSet = new Set(nodes);
+    nodes = Array.from(nodesSet);*/
+
+
+    // 设置节点和边的样式
+    var nodeCategories = [];
+    var edgeColors = [];
+    var edgeWidths = [];
+
+    edges.forEach(function (edge) {
+        var color = edge.isPred === '0' ? 'black' : 'gray';
+        edgeColors.push(color);
+        var width = edge.isPred === '0' ? 4 : 1;   // 设置粗细
+        edgeWidths.push(width);
+    });
+
+    // 初始化图表
+    var chart = echarts.init(document.getElementById('newsPropagationChart'));
+
+    // 设置图表配置项
+    var option = {
+        color: ['red', '#4fc1ea', '#7c15d5', '#00ff04'],
+        title: {
+            text: '新闻传播链可视化',
+            top: 'top',
+            left: 'center'
+        }, legend: [{
+            orient: 'vertical',
+            x: '20%',
+            y: '5%',
+            data: ['发布用户', '转发用户', '预测用户', '预测正确用户']
+        }],
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (x) {
+                return x.data.des;
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        animationDurationUpdate: 0,
+        animationEasingUpdate: 'linear',
+        series: [
+            {
+                categories: [
+                    {name: '发布用户'},
+                    {name: '转发用户'},
+                    {name: '预测用户'},
+                    {name: '预测正确用户'}
+                ],
+                type: 'graph',
+                layout: 'force',
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [4, 6],
+                edgeLabel: {
+                    fontSize: 1
+                },
+                force: {
+                    repulsion: 500,
+                    edgeLength: 50
+                },
+                data: nodes.map(function (node) {
+                    return {
+                        name: node.name,
+                        symbolSize: 20,
+                        category: node.category,
+                        itemStyle: {
+                            color: node.color
+                        }
+                    };
+                }),
+                edges: edges.map(function (edge, index) {
+                    return {
+                        source: edge.source,
+                        target: edge.target,
+                        lineStyle: {
+                            color: edgeColors[index],
+                            width: edgeWidths[index],
+                            edgeSymbol: ['circle', 'arrow']
+                        }
+                    };
+                })
+            }
+        ]
+    };
+
+    // 渲染图表
+    chart.setOption(option);
+</script>
+</body>
+</html>

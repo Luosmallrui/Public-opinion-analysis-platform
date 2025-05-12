@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+      xmln="http//www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>筛选流行度前十的新闻</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico"> <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <style>
+        .search-result {
+            position: relative;
+        }
+
+        .panel-body {
+            position: relative;
+        }
+
+        .search-result img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 90px;
+            height: 54px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="row clearfix">
+    <center>
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/news/list">首页</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="/news/list">事件追踪</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:8088/reposts/list">新闻传播链</a>
+                        </li>
+                        <li class="active">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">热点预测<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Something else here</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">Separated link</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">One more separated link</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="topics" placeholder="请输入新闻关键词" />
+                        </div> <button type="submit"  class="btn btn-default">搜索</button>
+
+                    </form>
+
+
+                </div>
+
+            </nav>
+            <div class="jumbotron">
+                <h1>
+                    关注热度前十的新闻
+                </h1>
+            </div>
+        </div>
+    </center>
+</div>
+
+
+</body>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <h2>
+                        新闻列表
+                    </h2>
+                    <small>搜索用时  (0.23秒)</small>
+                    <div class="hr-line-dashed"></div>
+                    <div class="panel-group" id="accordion">
+                        <div class = "search-result">
+                            <tr th:each="v : ${pops}">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               th:href="@{'#collapse-' + ${v.id}}">
+                                                标题
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div th:id="'collapse-' + ${v.id}" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <p>
+                                                发布时间：<td th:text="${v.createdAt}"></td>  新闻来源：<td th:text="${v.screenName}"> </td>
+                                            </p>
+                                            <p>
+                                                新闻详情：<td th:text="${v.text}"></td>
+                                            <img src="/bootstrap-icons-1.10.5/heart.svg" alt="Bootstrap" width="30" height="30">
+                                            </p>
+                                            <p>
+                                                <a class="btn btn-custom" th:href="@{'http://localhost:8088/reposts/retweet?id=' + ${v.id}}">查看新闻传播链»</a>
+                                            </p>
+                                            <div class="image-badge">
+                                                <img th:src="@{${v.label eq 'True' ? '/img/true.png' : '/img/fake.png'}}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 全局js -->
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+        <!-- 自定义js -->
+        <script src="https://www.jsdelivr.com/package/npm/content.js"></script>
+
+
+</body>
+</html>

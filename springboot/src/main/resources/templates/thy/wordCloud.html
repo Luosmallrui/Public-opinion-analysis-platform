@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts 词云示例</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+</head>
+<body>
+<div class="word-cloud" style="width:800px;height:400px;"></div>
+
+<script>
+    var wordCloudData = [
+        { name: "俄乌战争", value: 50 },
+        { name: "world", value: 30 },
+        { name: "data", value: 40},
+        { name: "visualization", value: 70},
+        { name: "test", value: 90},
+        { name: "echarts", value: 80 },
+        { name: "option", value: 60 },
+        { name: "series", value: 70}
+    ];
+</script>
+
+<script>
+    var myChart = echarts.init(document.querySelector('.word-cloud'));
+
+    var option = {
+        series: [
+            {
+                type: 'wordCloud',
+                shape: 'diamond',
+                textRotation : [0, 45, 90, -45],
+                textPadding: 0,
+                autoSize: {
+                    enable: true,
+                    minSize: 14
+                },
+                textStyle: {
+                    fontFamily: '微软雅黑',
+                    fontWeight: 'bold',
+                    color: function () {
+                        return 'rgb(' + [
+                            Math.round(Math.random() * 255),
+                            Math.round(Math.random() * 255),
+                            Math.round(Math.random() * 255)
+                        ].join(',') + ')';
+                    }
+                },
+                sizeRange: [12, 60],
+                rotationRange: [-90, 90] ,
+                data: wordCloudData
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+</script>
+</body>
+</html>

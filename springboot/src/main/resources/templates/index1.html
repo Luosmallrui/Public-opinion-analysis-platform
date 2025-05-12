@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>社交网络</title>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+<div id="main" style="height:800px"></div>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+    var option = {
+        series: [{
+            type: 'graph',
+            layout: 'force',
+            roam: true,
+            force: {
+                repulsion: 300,
+                edgeLength: 100
+            },
+            data: [{
+                name: 'A',
+                symbolSize: 30,
+                draggable: true
+            },
+                {
+                    name: 'B',
+                    symbolSize: 30,
+                    draggable: true
+                },
+                {
+                    name: 'C',
+                    symbolSize: 30,
+                    draggable: true
+                },
+                {
+                    name: 'D',
+                    symbolSize: 30,
+                    draggable: true
+                },
+                {
+                    name: 'E',
+                    symbolSize: 30,
+                    draggable: true
+                },
+                {
+                    name: 'F',
+                    symbolSize: 30,
+                    draggable: true
+                },
+            ],
+            links: [{
+                source: 'A',
+                target: 'B'
+            },
+                {
+                    source: 'A',
+                    target: 'C'
+                },
+                {
+                    source: 'B',
+                    target: 'D'
+                },
+                {
+                    source: 'C',
+                    target: 'E'
+                },
+                {
+                    source: 'D',
+                    target: 'F'
+                },
+                {
+                    source: 'E',
+                    target: 'F'
+                }
+            ],
+            label: {
+                show: true
+            },
+            lineStyle: {
+                width: 3,
+                curveness: 0.3,
+                opacity: 0.7
+            },
+            itemStyle: {
+                borderColor: '#000',
+                borderWidth: 2,
+                shadowBlur: 10,
+                shadowColor: '#000',
+                shadowOffsetX: 0,
+                shadowOffsetY: 0,
+                opacity: 1
+            },
+            emphasis: {
+                focus: 'adjacency',
+                lineStyle: {
+                    width: 10
+                }
+            },
+            events: {
+                'click': clickHandler //
+            }
+        }]
+    };
+
+    myChart.setOption(option);
+
+    function clickHandler(params) {
+        if (params.dataType === 'node') {
+            // 这里调用后台API进行预测，并返回结果
+            $.ajax({
+                url: '/predict',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'node': params.name // 传递点击的节点名
+                },
+                success: function(data) {
+                    // 处理返回的预测结果
+                    var top10 = data['top10'];
+                    console.log(top10);
+                    // 将预测结果加入图中
+                    for (var i = 0; i < top10.length; i++) {
+                        myChart.add({
+                            type: 'edge',
+                            source: params.name,
+                            target: top10[i],
+                            lineStyle: {
+                                width: 2,
+                                curveness: 0.3,
+                                color: '#ccc'
+                            }
+                        });
+                    }
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+server:
+  port: 8088
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    url: jdbc:mysql://localhost:3306/news?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  messages:
+    basename: i18n.login
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+    view-names: jsp/*
+  redis:
+    host: localhost
+    port: 6379
+  thymeleaf:
+    cache: false
+    content-type: text/html
+    encoding: UTF-8
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
+    view-names: thy/*
+  mail:
+    protocol: smtp #邮件协议
+    host: smtp.163.com
+    port: 25
+    username: geocheloneeee@163.com #发件人邮箱地址
+    password: KZXKITXCVBQADDYN #授权码
+    default-encoding: utf-8
+    properties:
+      mail:
+        debug: true #开启后会完整打印邮件发送过程的日志
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true # 开启驼峰映射
+
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

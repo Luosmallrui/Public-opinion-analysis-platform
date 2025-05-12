@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Propagation Visualization</title>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        #newsPropagationChart {
+            width: 100%;
+            height: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="row clearfix">
+    <center>
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/news/list">首页</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#">事件追踪</a>
+                        </li>
+                        <li class="active">
+                            <a href="#">新闻传播链</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">热点预测<strong
+                                    class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Another action</a>
+                                </li>
+                                <li>
+                                    <a href="#">Something else here</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">Separated link</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="#">One more separated link</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </center>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="newsPropagationChart"></div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    var propagationList = [[${propagationList}]];
+    console.log("前端接收到的数据：", propagationList);
+
+    if (propagationList && propagationList.length > 0) {
+        var nodes = [];
+        var edges = [];
+        var nodeMap = {};
+
+        var source = propagationList[0].postScreenName;
+
+        nodes.push({
+            name: source,
+            category: 0,
+            value: source
+        });
+        nodeMap[source] = true;
+
+        propagationList.forEach(function (item) {
+            if (!nodeMap[item.userScreenName]) {
+                nodes.push({
+                    name: item.userScreenName,
+                    category: 1,
+                    value: item.userScreenName
+                });
+                nodeMap[item.userScreenName] = true;
+            }
+
+            edges.push({
+                source: source,
+                target: item.userScreenName,
+                isPred: item.isPred || "0"
+            });
+        });
+
+        var chart = echarts.init(document.getElementById('newsPropagationChart'));
+
+        var option = {
+            title: {
+                text: '新闻传播链可视化',
+                top: 'top',
+                left: 'center'
+            },
+            legend: {
+                data: ['发布用户', '转发用户'],
+                orient: 'vertical',
+                left: 'left'
+            },
+            tooltip: {
+                formatter: function (params) {
+                    if (params.dataType === 'node') {
+                        return params.data.name;
+                    } else {
+                        return params.data.source + ' → ' + params.data.target;
+                    }
+                }
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    type: 'graph',
+                    layout: 'force',
+                    animation: true,
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{b}'
+                    },
+                    draggable: true,
+                    data: nodes.map(function (node) {
+                        return {
+                            id: node.name,
+                            name: node.name,
+                            symbolSize: node.category === 0 ? 30 : 20,
+                            category: node.category,
+                            value: node.value,
+                            itemStyle: {
+                                color: node.category === 0 ? '#ff4500' : '#4169e1'
+                            }
+                        };
+                    }),
+                    categories: [
+                        {name: '发布用户', itemStyle: {color: '#ff4500'}},
+                        {name: '转发用户', itemStyle: {color: '#4169e1'}}
+                    ],
+                    force: {
+                        repulsion: 100,
+                        gravity: 0.1,
+                        edgeLength: 150,
+                        layoutAnimation: true
+                    },
+                    edges: edges.map(function (edge) {
+                        return {
+                            source: edge.source,
+                            target: edge.target,
+                            lineStyle: {
+                                width: edge.isPred === '0' ? 3 : 1,
+                                color: edge.isPred === '0' ? '#000' : '#999',
+                                curveness: 0.2
+                            }
+                        };
+                    }),
+                    lineStyle: {
+                        opacity: 0.9,
+                        width: 2,
+                        curveness: 0
+                    }
+                }
+            ]
+        };
+
+        chart.setOption(option);
+        window.addEventListener('resize', function () {
+            chart.resize();
+        });
+
+    } else {
+        document.getElementById('newsPropagationChart').innerHTML = `
+        <div style="text-align:center; padding-top: 100px; font-size: 18px; color: #999;">
+            暂无传播数据
+        </div>
+    `;
+    }
+</script>
+</body>
+</html>

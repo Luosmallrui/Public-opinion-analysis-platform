@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+      xmln="http//www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>新闻详情页</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+    <style>
+        .charts-container {
+            display: flex;
+            /*justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;*/
+        }
+
+        .charts-container > .card {
+            flex: 1;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 47%;
+            height: 380px;
+            margin: 20px;
+        }
+
+        .chart-title {
+            position: relative;
+            top: -20px;
+            padding: 5px;
+            background: #ddd;  /* 灰色背景 */
+            border-radius: 3px; /* 圆角 */
+            font-size: 15px;   /* 修改字体大小 */
+        }
+
+        .word-cloud {
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        .bar-chart {
+            height: 100%;
+            vertical-align: middle;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="row clearfix">
+    <center>
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/news/list">首页</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="http://localhost:8088/popularity">流行度预测</a>
+                        </li>
+                        <!--<li>
+                            <a href="http://113.54.221.70:8088/reposts/list">新闻传播链</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">热点预测<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="http://113.54.221.70:8088/popularity">预测结果1</a>
+                                </li>
+                                <li>
+                                    <a href="#">预测结果2</a>
+                                </li>
+                            </ul>
+                        </li>-->
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search" action="${pageContext.request.contextPath}/news/list">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="topics" placeholder="请输入新闻关键词" />
+                        </div> <!--<%&#45;&#45;<button type="submit"  class="btn btn-default">搜索</button>&#45;&#45;%>-->
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">按时间筛选
+                                <span class="caret"></span>
+                            </button>
+                            <!--<%&#45;&#45;筛选顺序：点击下拉按钮之后按时间筛选，然后根据关键词选择新闻&#45;&#45;%>-->
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/timeoneweek">近一周</a></li>
+                                <li><a href="/timeonemonth">近一个月</a></li>
+                                <li><a href="/timehalfyear">近半年</a></li>
+                            </ul>
+                        </div><button type="submit"  class="btn btn-default">搜索</button>
+
+                    </form>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/account">用户管理</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+            <div class="jumbotron" >
+                <h1>
+                    欢迎来到舆情分析平台
+                </h1>
+                <p>
+                    这是一个关注新闻事件来龙去脉，尽可能还原事实真相的平台。能够帮助分析新闻事件，甚至预测舆论走向....
+                </p>
+                <p>
+                    <a class="btn btn-primary btn-large" href="#">了解更多</a>
+                </p>
+            </div>
+            <div class="charts-container">
+                <div class="card">
+                    <h2 class="chart-title">词云图</h2>
+                    <div class="word-cloud" style="width:100%;height:100%;"></div>
+                </div>
+                <div class="card">
+                    <h2 class="chart-title">直方图</h2>
+                    <div class="bar-chart" style="width:100%;height:100%;"></div>
+                </div>
+            </div>
+            <!--<div style="width: 1200px;">
+                <div class="word-cloud" style="float: left; width:600px;height:400px;"></div>
+                <div class="bar-chart" style="float: left; width:600px;height:400px;"></div>
+            </div>-->
+
+            <script>
+                var wordCloudData = [
+                    { name: "战争", value: 320 },
+                    { name: "冲突", value: 206 },
+                    { name: "美国", value: 375},
+                    { name: "军事", value: 176},
+                    { name: "俄乌局势", value: 854},
+                    { name: "中国", value: 210 },
+                    { name: "军队", value: 70},
+                    { name: "俄罗斯", value: 641},
+                    { name: "无人机", value: 70},
+                    { name: "新进展", value: 214}
+                ];
+            </script>
+
+            <script>
+                var myChart = echarts.init(document.querySelector('.word-cloud'));
+                var barChart = echarts.init(document.querySelector('.bar-chart'));
+
+                var barData = wordCloudData.map(d => d.value);
+                var barOption = {
+                    xAxis: {
+                        type: 'category',
+                        data: ['战争','冲突', '美国', '军事','俄乌局势','中国', '军队', '俄罗斯', '无人机', '新进展']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: barData,
+                        type: 'bar'
+                    }]
+                };
+                barChart.setOption(barOption);
+
+                var option = {
+                    series: [
+                        {
+                            type: 'wordCloud',
+                            shape: 'diamond',
+                            textRotation : [0, 45, 90, -45],
+                            textPadding: 0,
+                            autoSize: {
+                                enable: true,
+                                minSize: 14
+                            },
+                            textStyle: {
+                                fontFamily: '微软雅黑',
+                                fontWeight: 'bold',
+                                color: function () {
+                                    return 'rgb(' + [
+                                        Math.round(Math.random() * 255),
+                                        Math.round(Math.random() * 255),
+                                        Math.round(Math.random() * 255)
+                                    ].join(',') + ')';
+                                }
+                            },
+                            sizeRange: [12, 60],
+                            rotationRange: [-90, 90] ,
+                            data: wordCloudData
+                        }
+                    ]
+                };
+
+                myChart.setOption(option);
+            </script>
+        </div>
+    </center>
+</div>
+<script>
+    var wordCloud = echarts.init(document.querySelector('.word-cloud'));
+    wordCloud.on('click', function(params) {
+        var word = params.name;  // 点击的词
+        window.location.href = '/timehalfyear?topics=' + word;  // 跳转并带词参数
+    });
+</script>
+</body>
+</html>

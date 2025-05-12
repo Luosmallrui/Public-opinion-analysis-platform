@@ -1,0 +1,3515 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=graph-simple&theme=dark
+-->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="height: 100%; margin: 0">
+<div class="row clearfix">
+    <center>
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/news/list">首页</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">新闻传播链<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/trace1">一级转发</a>
+                                </li>
+                                <li>
+                                    <a href="/trace2">二级转发</a>
+                                </li>
+                                <li>
+                                    <a href="/trace">三级转发</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/trace" class="dropdown-toggle" data-toggle="dropdown">单源头<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/rumor">虚假新闻检测</a>
+                                </li>
+                                <li>
+                                    <a href="/source1">虚假新闻源头检测</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="/findsource">传播路径预测</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/trace" class="dropdown-toggle" data-toggle="dropdown">多源头<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/rumor">虚假新闻检测</a>
+                                </li>
+                                <li>
+                                    <a href="/source">虚假新闻源头检测</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                                <li>
+                                    <a href="/findsource">传播路径预测</a>
+                                </li>
+                                <li class="divider">
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </nav>
+        </div>
+    </center>
+</div>
+<div id="container" style="height: 100%">
+
+</div>
+
+
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+
+<script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, 'light', {
+        renderer: 'canvas',
+        useDirtyRect: false
+    });
+    var app = {};
+
+    var option;
+
+    option = {
+        color:['pink','gray'],
+        title: {
+            text: '社交网络(一级转发)',
+            top: 'top',
+            left: 'center'
+        },legend: [{
+            orient: 'vertical',
+            x: '20%',
+            y: '5%',
+            data: ['source', 'one-hop']
+        }],
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (x) {
+                return x.data.des;
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: { readOnly: false },
+                magicType: { type: ['line', 'bar'] },
+                restore: {},
+                saveAsImage: {}
+            }
+        } ,
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        series: [
+            {
+                categories: [
+                    { name: 'source' },
+                    { name: 'one-hop' },
+                ],
+                type: 'graph',
+                layout: 'force',
+                symbolSize: 20,
+                roam: true,
+                label: {
+                    show: false
+                },
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [4, 6],
+                edgeLabel: {
+                    fontSize: 1
+                },
+                force: {
+                    repulsion: 2500,
+                    edgeLength: [10, 50]
+                },
+                data: [
+                    {
+                        name: 's1',
+                        symbolSize: 25,
+                        category: 0,
+                        itemStyle: {
+                            normal: {
+                                color: 'pink'
+                            }
+                        }
+                    },
+                    {
+                        name: 's2',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: 's3',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: 's4',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: 's5',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: 's6',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: 's7',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+
+                    {
+                        name: '1',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '2',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '3',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '4',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '5',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '6',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '7',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '8',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '9',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '10',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '61',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '62',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '63',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '64',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '65',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '66',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '67',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '68',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '69',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '70',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                ],
+
+
+                // links: [],
+                links: [
+                    {
+                        source: 's1',
+                        target: '1',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '2',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '3',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '4',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '5',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '6',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '7',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '8',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '9',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '10',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: 's2',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2,
+                            curveness: 0
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '11',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '12',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '13',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '14',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '15',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '16',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '17',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '18',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '19',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '20',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: 's3',
+                        symbolSize: [3, 4],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '21',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '22',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '23',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '24',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '25',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '26',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '27',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '28',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: '29',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: '30',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: 's4',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '41',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '42',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '43',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '44',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '45',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '46',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '47',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '48',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '49',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: '50',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: 's5',
+                        symbolSize: [3, 4],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '31',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '32',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '33',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '34',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '35',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '36',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '37',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '38',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '39',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: '40',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: 's6',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '51',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '52',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '53',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '54',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '55',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '56',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '57',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '58',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '59',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: '60',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '61',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '62',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '63',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '64',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '65',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '66',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '67',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '68',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '69',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: '70',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's1',
+                        target: 's7',
+                        symbolSize: [3, 4],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '71',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '72',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '73',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '74',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '75',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '76',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '77',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '78',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '79',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '80',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: 's8',
+                        symbolSize: [3, 4],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '81',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '82',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '83',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '84',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '85',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '86',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '87',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '88',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '89',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's8',
+                        target: '90',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: 's9',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '91',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '92',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '93',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '94',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '95',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '96',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '97',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '98',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '99',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's9',
+                        target: '100',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: 's10',
+                        symbolSize: [3, 4],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '101',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '102',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '103',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '104',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '105',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '106',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '107',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '108',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '109',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's10',
+                        target: '110',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: 's11',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '111',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '112',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '113',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '114',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '115',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '116',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '117',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '118',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '119',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's11',
+                        target: '120',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's2',
+                        target: 's12',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '121',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '122',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '123',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '124',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '125',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '126',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '127',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '128',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '129',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's12',
+                        target: '130',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: 's13',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '131',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '132',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '133',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '134',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '135',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '136',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '137',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '138',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '139',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's13',
+                        target: '140',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: 's15',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '151',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '152',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '153',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '154',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '155',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '156',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '157',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '158',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '159',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's15',
+                        target: '160',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: 's14',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '141',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '142',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '143',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '144',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '145',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '146',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '147',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '148',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '149',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's14',
+                        target: '150',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: 's16',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '161',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '162',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '163',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '164',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '165',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '166',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '167',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '168',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '169',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's16',
+                        target: '170',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's3',
+                        target: 's17',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '171',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '172',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '173',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '174',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '175',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '176',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '177',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '178',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '179',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's17',
+                        target: '180',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: 's18',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '181',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '182',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '183',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '184',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '185',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '186',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '187',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '188',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '189',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's18',
+                        target: '190',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: 's19',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '191',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '192',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '193',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '194',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '195',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '196',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '197',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '198',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '199',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's19',
+                        target: '200',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's4',
+                        target: 's20',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '201',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '202',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '203',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '204',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '205',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '206',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '207',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '208',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '209',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's20',
+                        target: '210',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: 's21',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '211',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '212',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '213',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '214',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '215',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '216',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '217',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '218',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '219',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's21',
+                        target: '220',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: 's22',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '221',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '222',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '223',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '224',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '225',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '226',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '227',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '228',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '229',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's22',
+                        target: '230',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's5',
+                        target: 's23',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '231',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '232',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '233',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '234',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '235',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '236',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '237',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '238',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '239',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's23',
+                        target: '240',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's6',
+                        target: 's24',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '241',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '242',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '243',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '244',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '245',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '246',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '247',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '248',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '249',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's24',
+                        target: '250',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: 's24',
+                        symbolSize: [3, 5],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '251',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '252',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '253',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '254',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    {
+                        source: 's7',
+                        target: '255',
+                        symbolSize: [5, 10],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                ],
+                lineStyle: {
+                    opacity: 0.5,
+                    width: 2,
+                    curveness: 0
+                }
+            }
+        ]
+    };
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+</script>
+</body>
+</html>

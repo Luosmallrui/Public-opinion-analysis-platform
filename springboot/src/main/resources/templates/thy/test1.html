@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>graph</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+<div id="main" style="width: 700px;height: 700px"></div>
+<script type="text/javascript">
+    var dom = document.getElementById('main');
+    var myChart = echarts.init(dom);
+    var datas = [{
+        name: '节点1',
+        itemStyle: {
+            normal: {
+                color: '#f90', //圆点的颜色
+                label: {
+                    position: 'bottom',
+                    textStyle: {
+                        color: '#f90'
+                    }
+                }
+            }
+        },
+    }, {
+        name: '节点2',
+        category: 1,
+        itemStyle: {
+            normal: {
+                color: '#090',
+            },
+            emphasis: {
+                color: "#000"
+            }
+        }
+    }, {
+        name: '节点2',
+        category: 1,
+        draggable: true,
+    }, {
+        name: '节点3',
+        category: 0,
+        draggable: true,
+    }, {
+        name: '节点5',
+        category: 0,
+        draggable: true,
+    }, {
+        name: '节点6',
+        category: 0,
+        draggable: true,
+    }]
+    var obj = {};
+    for(var i=0;i<datas.length;i++){
+        obj[i] = datas[i].name;
+    }
+    console.log(obj);
+    var data = [];
+    for(var p in obj){
+        data.push({
+            name: p,
+            showName: obj[p],
+            tooltip: {
+                show: true,
+                formatter: function(params){
+                    return params.data.showName
+                }
+            }
+        })
+    }
+    var option = {
+        tooltip: {
+            show: false
+        },
+        legend: {
+            x: "center",
+            data: ["家人", "朋友"]
+        },
+        animation: false,
+        series: [{
+            categories: [{
+                name: '家人',
+                itemStyle: {
+                    normal: {
+                        color: "#009800",
+                    }
+                }
+            }, {
+                name: '朋友',
+                itemStyle: {
+                    normal: {
+                        color: "#4592FF",
+                    }
+                }
+            }],
+            type: 'graph',
+            layout: 'force',
+            symbol: "circle",
+            symbolSize: 50,
+            roam: true, //禁止用鼠标滚轮缩小放大效果
+            edgeSymbol: ['circle', 'arrow'],
+            edgeSymbolSize: [0, 10],
+            // 连接线上的文字
+            focusNodeAdjacency: true, //划过只显示对应关系
+            edgeLabel: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 20
+                    },
+                    formatter: "{c}"
+                }
+            },
+            lineStyle: {
+                normal: {
+                    opacity: 1,
+                    width: 2,
+                    curveness: 0
+                }
+            },
+            // 圆圈内的文字
+            label: {
+                normal: {
+                    show: true,
+                    formatter: function(params){
+                        return params.data.showName
+                    }
+                }
+            },
+            force: {
+                repulsion: 5000
+            },
+            data: data,
+            links: [{
+                source: 0,
+                target: 1,
+                value: "朋友",
+                lineStyle: {
+                    normal: {
+                        color: '#38f',
+                        curveness: 0 // 线的弯曲度 0-1之间 越大则歪曲度更大
+                    }
+                },
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#07ac72'
+                        }
+                    }
+                }
+            }, {
+                source: 0,
+                target: 2,
+                value: "朋友"
+            }, {
+                source: 0,
+                target: 3,
+                value: "家人"
+            }, {
+                source: 0,
+                target: 4,
+                value: "家人"
+            }, {
+                source: 0,
+                target: 5,
+                value: "家人"
+            }, ]
+        }]
+    };
+    myChart.setOption(option);
+</script>
+</body>
+</html>

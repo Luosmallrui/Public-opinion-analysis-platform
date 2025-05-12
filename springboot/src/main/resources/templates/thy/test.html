@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>新闻热搜</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 导入 Bootstrap 样式 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
+    <!-- 导入 jQuery 库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 导入 Bootstrap JavaScript 插件 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js"></script>
+    <style>
+        .list-group-item.active {
+            background-color: rgb(250, 151, 0);
+            border-color: #fa9700;
+        }
+        .list-group-item {
+            background-color: #f8f9fa;
+            border-color: #f8f9fa;
+        }
+        .list-group-item a {
+            color: #343a40;
+        }
+        .btn {
+            font-size: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #6cb640;
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">流行度预测</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="http://localhost:8088/news/list">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">新闻查询</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">流行度预测</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    <h1 class="text-center">热点事件</h1>
+    <hr>
+
+    <!-- 新闻列表 -->
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <ul class="list-group">
+                <li class="list-group-item active">今日热搜</li>
+                <li class="list-group-item news-item">
+                    <div class="news-title"><a href="#">克里姆林宫被无人机袭击</a></div>
+                    <div class="news-info">
+                        <span class="news-source">来源：卢克文</span>
+                        <span class="news-date">发布时间：2023/5/6  19:17:00</span>
+                    </div>
+                    <div class="news-content">
+                        克里姆林宫被无人机袭击，何方势力在阻拦俄乌和谈？#V光计划# 卢克文的微博视频
+                    </div>
+                    <button class="btn btn-link news-toggle" data-bs-toggle="collapse" data-bs-target=".news-content">展开/收起</button>
+                </li>
+                <li class="list-group-item news-item">
+                    <div class="news-title"><a href="#">关于土耳其通胀问题</a></div>
+                    <div class="news-info">
+                        <span class="news-source">来源：李建秋的世界</span>
+                        <span class="news-date">发布时间：2023/5/6  18:52:42</span>
+                    </div>
+                    <div class="news-content">
+                        关于土耳其通胀问题，我们来看一个反例，俄罗斯。知道俄罗斯现在通胀多高么？2.55%这成绩，欧洲第一吧。大英落泪：通胀又高，增长还低，俄乌战争在英国打的咩？俄罗斯这么多年，其实经济……就那样。表面上不如土耳其哪怕被美国人把外汇储备冻结了。现在对俄制裁已经是制无可制了，俄罗斯通胀表现比美帝都好。俄罗斯外债和内债都极低，且俄罗斯一直是顺差，经常账户一直是盈余状态。当然有一说一，这个极低也是有原因的，98年叶利钦掀桌子，导致俄罗斯在国际市场上融不到钱，既然融不到钱，那低也很正常。我只是想给大家说清楚这个道理。那这时候你就要想到这里面的关系，我国是特别谨慎的国家，我国外债也很低，外汇储备可以完全覆盖外债，这和俄罗斯差不多，同时我国还是巨额顺差国家，但是迄今为止金融上准备欠缺，因此资本账户依然没有完全开放。#微博新知博主#
+                    </div>
+                    <button class="btn btn-link news-toggle" data-bs-toggle="collapse" data-bs-target=".news-content">展开/收起</button>
+                </li>
+                <li class="list-group-item news-item">
+                    <div class="news-title"><a href="#">一个辩证唯物主义者眼中的俄乌战争及其启示</a></div>
+                    <div class="news-info">
+                        <span class="news-source">来源：赵盛烨</span>
+                        <span class="news-date">发布时间：2023/5/7  7:31:43</span>
+                    </div>
+                    <div class="news-content">
+                        一个辩证唯物主义者眼中的俄乌战争及其启示：先通过意识形态渗透拆解了苏联，然后通过颜色革命培育乌克兰亲美政权，再用乌克兰挑逗俄罗斯底线，诱逼俄罗斯动用武力，同时向乌克兰提供有偿的高利润军工支持和雇佣兵支持，最终让俄罗斯踏入第二个阿富汗战争式的泥潭，再用国际经济和金融手段勒紧俄罗斯的脖子，辅助原材料和商品制裁，用全面的舆论战手段将俄罗斯包装出不义形象，将乌克兰包装出受害者形象，将美国包装出救世主形象。这一系列操作下来数十年，将前苏联创造的所有科技、人才、经济和军事基础消耗殆尽，将欧洲共同体计划完全打乱，在无尽的混乱当中牟取利益补贴自己，美国的现代全面战争手段令人叹为观止，不服不行啊！软刀子怕硬刀子，但软刀子有时间一点一点的给硬刀子削皮，直到硬刀子无力反抗，最终只能束手就擒。在可以遇见的将来，首先“强大的俄罗斯”恐怕不会再有了，甚至可能将面对二次解体的危机，同时我们为普京的人身安全感到极为担忧，乌克兰也不会好，各式各样的战争贷款会将这个国家拖入贫困国家行列，乌克兰人民不得不在巨额负债下苟且偷生。有的人说美国人简直是人类的毒瘤，我则不完全赞成这句话：多看看历史，人类数十万年以来，不就是这样走过来的吗？胜者王侯败者寇，并不是正义总会战胜邪恶，而是历史由胜利者书写，博弈的最终胜利者就是正义而已，大家都是为了生存，在弱肉强食的世界里，只不过是苏联输了、美国赢了，失败者沦为鱼肉，仅此而已。现今的美国人已经把孙子兵法、三十六计甚至毛泽东思想运用得游刃有余，而我们当中的绝大多数人却不自知，根本认识不到现代战争已经完全变革了传统的武装冲突模式，转而更加追寻“不战而屈人之兵”之术，实在是无可救药，这样的现状令本博感到担忧。回顾俄乌战争以来本博的所有担忧和预言几乎都已经成为了现实，俄罗斯和乌克兰方面的朋友们也并不是看不到我们的研判，但最终还是走到了现在的境地，实在是一声叹息：旁观者清，当局者迷啊！美国的阳谋和传统的阴谋区别在于，普京明明知道那是一个火坑，还不得不往里面跳，因为战争发生以前，摆在普京面前只有两条路，左边那条路是立即失败，右边那条路是在火坑里寻找新的出路…聊到这里，对俄乌战争，也就基本无语了，转向把目光聚焦在我们自身，台湾问题也是摆在我们面前的一个火坑，本博当然喜欢武力收复，打个酣畅淋漓痛痛快快。但理智告诉我们必须谨慎前行，用最大的诚意和最大的忍耐力来通过和平手段解决两岸统一问题，毕竟在聪明人的面前，其实路还是很多的，例如做一个以猎物身份出现的猎人，量身打造给老鹰设计一个捕鸟笼！毕竟干掉聪明的坏人的唯一方式就是比聪明的坏人更聪明：执正义，行天道，立苍生，保太平，方能远行！#唯物主义辩证法活学活用##领航计划#
+                    </div>
+                    <button class="btn btn-link news-toggle" data-bs-toggle="collapse" data-bs-target=".news-content">展开/收起</button>
+                </li>
+                <li class="list-group-item news-item">
+                    <div class="news-title"><a href="#">波兰直播拆除红军纪念碑</a></div>
+                    <div class="news-info">
+                        <span class="news-source">来源：萤火虫如我</span>
+                        <span class="news-date">发布时间：2023/5/6  13:13:32</span>
+                    </div>
+                    <div class="news-content">
+                        ❶ 波兰直播拆除红军纪念碑，扎哈罗娃斥其忘恩负义❷ 苏德分赃前的狂欢·波兰境内联合阅兵式-苏联官方·莫斯科之声宣传片，1939.9.22 :苏德共同入侵波兰期间，在原波兰境内布列斯特“胜利会师”，苏德举行联合阅兵式，当时双方正处于短暂“蜜月期”，随后签署了“分赃协议”并瓜分了波兰，之后约2.2万波兰精英被“解放”到了卡廷森林。波兰战役，是苏联、nazi德国与斯洛伐克（德占仆从国）在1939年9月入侵波兰的战役，该战役被认为是二战的开始。PS:  布列斯特二战后没有归还波兰，目前在白俄罗斯境内。#乌克兰##俄罗斯##美国##德国##日本##历史##乌克兰局势##俄乌局势#历史
+                    </div>
+                    <button class="btn btn-link news-toggle" data-bs-toggle="collapse" data-bs-target=".news-content">展开/收起</button>
+                </li>
+                <li class="list-group-item news-item">
+                    <div class="news-title"><a href="#">军队在巴赫穆特大规模轰炸</a></div>
+                    <div class="news-info">
+                        <span class="news-source">来源：萤火虫如我</span>
+                        <span class="news-date">发布时间：2023/5/6  11:17:54</span>
+                    </div>
+                    <div class="news-content">
+                        #俄罗斯# 军队在巴赫穆特大规模使用了联合国明令禁止的白磷燃烧弹与铝热燃烧弹，进行无差别大轰炸（包括居民区），这在海牙的起诉书上又填写了浓墨的一页！ #乌克兰##美国##泽连斯基##俄乌局势##乌克兰局势##俄乌战争##俄罗斯乌克兰##历史#乌克兰 萤火虫如我的微博视频
+                    </div>
+                    <button class="btn btn-link news-toggle" data-bs-toggle="collapse" data-bs-target=".news-content">展开/收起</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+    <meta charSet="utf-8">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%">
+
+</div>
+
+
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+
+<script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, 'light', {
+        renderer: 'canvas',
+        useDirtyRect: false
+    });
+    var app = {};
+
+    var option;
+
+    option = {
+        color: ['red', 'gray', '#4fc1ea'],
+        title: {
+            text: '新闻传播链可视化',
+            top: 'top',
+            left: 'center'
+        }, legend: [{
+            orient: 'vertical',
+            x: '20%',
+            y: '5%',
+            data: ['发布用户', '转发用户', '下一跳预测用户']
+        }],
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (x) {
+                return x.data.des;
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        series: [
+            {
+                categories: [
+                    {name: '发布用户'},
+                    {name: '转发用户'},
+                    {name: '下一跳预测用户'}
+                ],
+                type: 'graph',
+                layout: 'force',
+                symbolSize: 20,
+                roam: true,
+                label: {
+                    show: false
+                },
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [4, 6],
+                edgeLabel: {
+                    fontSize: 1
+                },
+                force: {
+                    repulsion: 2500,
+                    edgeLength: [10, 50]
+                },
+                data: [
+                    {
+                        name: '军武吐槽 ',
+                        symbolSize: 25,
+                        category: 0,
+                        itemStyle: {
+                            normal: {
+                                color: 'red'
+                            }
+                        }
+                    },
+                    {
+                        name: 'min1986zi',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '佐罗重出江湖',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '牛市sky',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '美国创业者',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '毛哥EOS',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: ' A蜡笔没有小新呀',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: '#4fc1ea'
+                            }
+                        }
+                    },
+                    {
+                        name: ' 歃血-关河令',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: '#4fc1ea'
+                            }
+                        }
+                    },
+                    {
+                        name: '把那几只冒绿光的通通买进',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '大叔本',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: 'gray'
+                            }
+                        }
+                    },
+                    {
+                        name: '风水风水的玩具世界',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: '#4fc1ea'
+                            }
+                        }
+                    },
+                    {
+                        name: '段小丑鱼',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: '#4fc1ea'
+                            }
+                        }
+                    },
+                    {
+                        name: '吉星高照崔海云',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: '#4fc1ea'
+                            }
+                        }
+                    },
+                    {
+                        name: '黑人cccp二号',
+                        symbolSize: 25,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                color: '#4fc1ea'
+                            }
+                        }
+                    }
+                    ],
+
+
+                // links: [],
+                links: [
+                    {
+                        source: '军武吐槽',
+                        target: '黑人cccp二号',
+                        symbolSize: [5, 7],
+                        label: {
+                            show: true
+                        },
+                        lineStyle: {
+                            width: 2
+                        }
+                    },
+                    ],
+                lineStyle: {
+                    opacity: 0.5,
+                    width: 2,
+                    curveness: 0
+                }
+            }
+        ]
+    };
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+</script>
+</body>
+</html>
