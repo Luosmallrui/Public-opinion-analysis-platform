@@ -28,7 +28,7 @@ public class TimeController {
         String topics = request.getParameter("topics");
         List<News> tows = timeServcie.findByTimeoneweek(topics);
         System.out.println(tows + " " + topics);
-        model.addAttribute("tow", tows);
+        model.addAttribute("thy", tows);
         return "thy/timeoneweek";
     }
 
@@ -43,7 +43,7 @@ public class TimeController {
     public String listonemonth(Model model, HttpServletRequest request) {
         String topics = request.getParameter("topics");
         List<News> toms = timeServcie.findByTimeonemonth(topics);
-        model.addAttribute("tom", toms);
+        model.addAttribute("thy", toms);
         return "thy/timeonemonth";
     }
 
