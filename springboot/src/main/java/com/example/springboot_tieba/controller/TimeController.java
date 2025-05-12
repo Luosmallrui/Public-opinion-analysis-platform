@@ -18,6 +18,7 @@ public class TimeController {
 
     /**
      * 查询近一周
+     *
      * @param model
      * @param request
      * @return
@@ -26,12 +27,14 @@ public class TimeController {
     public String listoneweek(Model model, HttpServletRequest request) {
         String topics = request.getParameter("topics");
         List<News> tows = timeServcie.findByTimeoneweek(topics);
+        System.out.println(tows + " " + topics);
         model.addAttribute("tow", tows);
-        return "tow/timeoneweek";
+        return "thy/timeoneweek";
     }
 
     /**
      * 查询近一个月
+     *
      * @param model
      * @param request
      * @return
@@ -41,11 +44,12 @@ public class TimeController {
         String topics = request.getParameter("topics");
         List<News> toms = timeServcie.findByTimeonemonth(topics);
         model.addAttribute("tom", toms);
-        return "tom/timeonemonth";
+        return "thy/timeonemonth";
     }
 
     /**
      * 查询近半年
+     *
      * @param model
      * @param request
      * @return
@@ -57,7 +61,6 @@ public class TimeController {
         model.addAttribute("thy", thys);
         return "thy/timehalfyear";
     }
-
 
 
 }
